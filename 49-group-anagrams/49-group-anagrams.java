@@ -1,5 +1,5 @@
 class Solution {
-    //Time O(N*(klogK))
+    //Time O(N*k)
     //Space O(N)
     public List<List<String>> groupAnagrams(String[] strs) {
         if(strs == null || strs.length == 0)
@@ -9,20 +9,31 @@ class Solution {
         HashMap<String , List<String>> map = new HashMap<>();
         for(int i = 0 ; i < strs.length ; i++)
         {
-            char ar[] = strs[i].toCharArray();
-            Arrays.sort(ar);
-            String s = new String(ar);
+            String s = getCount(strs[i]);
+            //System.out.println(s);
             if(!map.containsKey(s))
             {
                 map.put(s , new ArrayList<>());
             }
             map.get(s).add(strs[i]);
         }
-        List<List<String>> ans = new ArrayList<>();
-        for(String s : map.keySet())
+        return new ArrayList<>(map.values());
+    }
+    
+    private String getCount(String s)
+    {
+        int ar[] = new int[26];
+        
+        for(int i = 0 ; i < s.length() ; i++)
         {
-            ans.add(map.get(s));
+            ar[s.charAt(i)-'a']++;
         }
-        return ans;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ; i < ar.length ; i++)
+        {
+            sb.append('#');
+            sb.append(ar[i]);
+        }
+        return sb.toString();
     }
 }
