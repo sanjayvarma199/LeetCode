@@ -14,34 +14,25 @@
  * }
  */
 class Solution {
-    //Time O(Nlogk)
+    //Time O(NlogK)
     //Space O(N)
-    PriorityQueue<Integer> PQ;
-    int k;
     public int kthSmallest(TreeNode root, int k) {
         if(root == null)
         {
-            return -1;
+            return 0;
         }
-        this.k = k;
-        PQ = new PriorityQueue<>((a,b) -> (b-a));
-        helper(root);
+        PriorityQueue<Integer> PQ = new PriorityQueue<>((a,b) -> (b-a));
+        Queue<TreeNode> Q = new LinkedList<>();
+        Q.add(root);
+        while(!Q.isEmpty())
+        {
+            TreeNode temp = Q.poll();
+            if(temp == null) continue;
+            PQ.add(temp.val);
+            if(PQ.size() > k) PQ.poll();
+            Q.add(temp.left);
+            Q.add(temp.right);
+        }
         return PQ.poll();
-    }
-    
-    private void helper(TreeNode root)
-    {
-        //base
-        if(root == null)
-        {
-            return;
-        }
-        PQ.add(root.val);
-        if(PQ.size() > k)
-        {
-            PQ.poll();
-        }
-        helper(root.left);
-        helper(root.right);
     }
 }
