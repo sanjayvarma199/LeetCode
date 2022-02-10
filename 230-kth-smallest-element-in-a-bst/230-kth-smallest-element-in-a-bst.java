@@ -15,13 +15,12 @@
  */
 class Solution {
     //Time O(N)
-    //Space O(N)
+    //Space O(H)
     public int kthSmallest(TreeNode root, int k) {
         if(root == null)
         {
             return 0;
         }
-        List<Integer> list = new ArrayList<>();
         Stack<TreeNode> stack = new Stack<>();
         while(root != null || !stack.isEmpty())
         {
@@ -31,9 +30,9 @@ class Solution {
                 root = root.left;
             }
             root = stack.pop();
-            list.add(root.val);
+            if(--k == 0) return root.val;
             root = root.right;
         }
-        return list.get(k-1);
+        return -1;
     }
 }
