@@ -9,7 +9,7 @@
  */
 
 class Solution {
-    //Time O(N)
+    //Time O(H)
     //Space O(H)
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if(root == null)
