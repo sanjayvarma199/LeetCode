@@ -14,20 +14,12 @@ class Solution {
     
     private void helper(int[] nums , int index , List<Integer> path)
     {
-        //base
-        if(index > nums.length)
+        result.add(new ArrayList<>(path));
+        for(int i = index ; i < nums.length ; i++)
         {
-            return;
+            path.add(nums[i]);
+            helper(nums , i+1 , path);
+            path.remove(path.size()-1);
         }
-        if(index == nums.length)
-        {
-           result.add(new ArrayList<>(path));
-            return;
-        }
-        //logic
-        helper(nums , index+1 , path); // Don't Chose
-        path.add(nums[index]);
-        helper(nums , index+1 , path); // Chose
-        path.remove(path.size()-1); // Backtrack
     }
 }
