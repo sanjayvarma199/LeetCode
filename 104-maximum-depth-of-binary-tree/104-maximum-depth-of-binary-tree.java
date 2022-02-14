@@ -15,26 +15,16 @@
  */
 class Solution {
     //Time O(N)
-    //Space O(N)
+    //Space O(H)
     public int maxDepth(TreeNode root) {
         if(root == null)
         {
             return 0;
         }
-        int depth = 0;
-        Queue<TreeNode> Q = new LinkedList<>();
-        Q.add(root);
-        while(!Q.isEmpty())
+        if(root.left == null && root.right == null)
         {
-            int size = Q.size();
-            for(int i = 0 ; i < size ; i++)
-            {
-                TreeNode out = Q.poll();
-                if(out.left != null) Q.add(out.left);
-                if(out.right != null) Q.add(out.right);
-            }
-            depth++;
+            return 1;
         }
-        return depth;
+        return Math.max(maxDepth(root.left) , maxDepth(root.right)) + 1;
     }
 }
