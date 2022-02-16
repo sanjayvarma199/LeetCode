@@ -1,5 +1,5 @@
 class Solution {
-    //Time O(N^2)
+    //Time O(N*k)
     //Space O(1)
     public int numKLenSubstrNoRepeats(String s, int k) {
         //Input Validation
