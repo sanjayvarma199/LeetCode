@@ -1,28 +1,33 @@
 class Solution {
-    //Time O(N*k)
+    //Time O(N)
     //Space O(1)
     public int numKLenSubstrNoRepeats(String s, int k) {
+        
         //Input Validation
         if(s == null || s.length() == 0)
         {
             return 0;
         }
         int count = 0;
-        for(int i = 0 ; i < s.length() ; i++)
+        Set<Character> set = new HashSet<>();
+        //Two Pointers
+        int left = 0 , right = 0;
+        while(right < s.length())
         {
-            int  j = i;
-            Set<Character> set = new HashSet<>();
-            while(j < s.length() && j - i < k)
+            char c = s.charAt(right);
+            while(set.contains(c))
             {
-                char c = s.charAt(j);
-                if(set.contains(c))
-                {
-                    break;
-                }
-                set.add(c);
-                j++;
+                set.remove(s.charAt(left));
+                left++;
             }
-            if(j - i == k) count++;
+            set.add(c);
+            if(right - left + 1 == k)
+            {
+                count++;
+                set.remove(s.charAt(left));
+                left++;
+            }
+            right++;
         }
         return count;
     }
