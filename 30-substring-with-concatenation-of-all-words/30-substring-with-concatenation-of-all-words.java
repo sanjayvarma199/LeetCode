@@ -1,11 +1,9 @@
 class Solution {
-    // N - words.length ;  l - word.length()
-    //Time O(S*N*L - (N*L)^2)
-    //Space O(N)
+    //Time O(N*L)
+    //Space O(N + words.length)
     int subString_len , word_len , size;
     Map<String , Integer> map;
     public List<Integer> findSubstring(String s, String[] words) {
-        //Input Validation
         if(s == null || s.length() == 0)
         {
             return new ArrayList<>();
@@ -18,42 +16,70 @@ class Solution {
         //Create an HashMap for freq count
         map = new HashMap<>();
         
+        for(String word : words)
+        {
+            map.put(word , map.getOrDefault(word , 0)+1);
+        }
+        
         //Process all the words
-        for(int i = 0; i < words.length ; i++)
+        List<Integer> answer = new ArrayList<>();
+        for(int i = 0; i < word_len ; i++)
         {
-            map.put(words[i] , map.getOrDefault(words[i] , 0) + 1);
+            SidingWindow(i , s , answer);
         }
-        
-        
-        //Process the string to find the indexes of a substring
-        for(int i = 0; i <= s.length()-subString_len ; i++)
-        {
-            if(Valid(s , i))
-            {
-                list.add(i);
-            }
-        }
-        return list;
+        return answer;
     }
     
-    private boolean Valid(String s , int i)
+    private void SidingWindow(int left , String s , List<Integer> answer)
     {
-        int count = 0;
-        HashMap<String , Integer> map1 = new HashMap<>(map);
-        for(int j = i; j < i + subString_len ; j += word_len)
+        HashMap<String , Integer> map_found = new HashMap<>();
+        int word_used = 0;
+        boolean excess = false;
+        
+        for(int right = left ; right <= s.length() - word_len ; right += word_len)
         {
-            String sub_String = s.substring(j , j + word_len);
-            if(map1.containsKey(sub_String))
+            
+            String sub = s.substring(right , right + word_len);
+            if(!map.containsKey(sub))
             {
-                map1.put(sub_String , map1.get(sub_String)-1);
-                map1.remove(sub_String , 0);
-                count++;
+                map_found.clear();
+                word_used = 0;
+                excess = false;
+                left = right + word_len;
             }
             else
             {
-                break;
+                while(right - left == subString_len || excess)
+                {
+                    String Left_most = s.substring(left , left + word_len);
+                    left += word_len;
+                    map_found.put(Left_most , map_found.get(Left_most)-1);
+                    
+                    if(map_found.get(Left_most) >= map.get(Left_most))
+                    {
+                        excess = false;
+                    }
+                    else
+                    {
+                        word_used--;
+                    }
+                }
+                
+                map_found.put(sub , map_found.getOrDefault(sub , 0)+1);
+                if(map_found.get(sub) <= map.get(sub))
+                {
+                    word_used++;
+                }
+                else
+                {
+                    excess = true;
+                }
+                
+                if(word_used == size && !excess)
+                {
+                    answer.add(left);
+                }
             }
         }
-        return count == size;
     }
 }
