@@ -14,40 +14,29 @@ class Solution {
             char c = t.charAt(i);
             T_Map.put(c , T_Map.getOrDefault(c , 0) + 1);
         }
-        HashMap<Character , Integer> Curr_Map = new HashMap<>();
-        int left = 0 , right = 0;
-        int formed = 0 , required = T_Map.size();
+        int left = 0;
+        int required = T_Map.size();
         int ans[] = {-1,0,0};
-        while(right < s.length())
+        for(int right = 0 ; right < s.length() ; right++)
         {
             char c = s.charAt(right);
-            if(T_Map.containsKey(c))
+            T_Map.put(c , T_Map.getOrDefault(c , 0)-1);
+            if(T_Map.get(c) == 0) required--;
+            //The current window contains all the chars from T
+            while(required == 0)
             {
-                Curr_Map.put(c , Curr_Map.getOrDefault(c , 0)+1);
-                if(T_Map.containsKey(c) && Curr_Map.get(c).equals(T_Map.get(c)))
+                if(ans[0] == -1 || right - left + 1 < ans[0])
                 {
-                    formed++;
+                    ans[0] = right-left+1;
+                    ans[1] = left;
+                    ans[2] = right;
                 }
-                    while(formed == required && left <= right)
-                    {
-                        char left_char = s.charAt(left);
-                        if(ans[0] == -1 || right-left+1 < ans[0])
-                        {
-                            ans[0] = right-left+1; ans[1] = left ; ans[2] = right;
-                        }
-                        if(!Curr_Map.containsKey(left_char))
-                        {
-                            left++;continue;
-                        }
-                        Curr_Map.put(left_char , Curr_Map.get(left_char)-1);
-                        if(Curr_Map.get(left_char) < T_Map.get(left_char))
-                        {
-                            formed--;
-                        }
-                        left++;
-                    }
+                char Left_char = s.charAt(left);
+                T_Map.put(Left_char , T_Map.get(Left_char)+1);
+                // Left had crossed a char from T
+                if(T_Map.get(Left_char) > 0) required++;
+                left++;
             }
-            right++;
         }
         if(ans[0] == -1) return "";
         return s.substring(ans[1] , ans[2] + 1);
