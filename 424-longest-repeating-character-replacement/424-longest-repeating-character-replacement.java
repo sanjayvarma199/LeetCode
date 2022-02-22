@@ -17,7 +17,7 @@ class Solution {
             map.put(c , map.getOrDefault(c , 0)+1);
             Max_Count  = Math.max(Max_Count , map.get(c));
             
-            if(right - left + 1 - Max_Count > k)
+            while(right - left + 1 - Max_Count > k)
             {
                 char Left_Char = s.charAt(left);
                 map.put(Left_Char , map.get(Left_Char)-1);
