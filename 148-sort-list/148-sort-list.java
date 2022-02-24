@@ -10,7 +10,7 @@
  */
 class Solution {
     //Time O(NlogN)
-    //Space O(1)
+    //Space O(logN)
     public ListNode sortList(ListNode head) {
         if(head == null || head.next == null)
         {
