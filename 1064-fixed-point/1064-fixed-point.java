@@ -6,19 +6,16 @@ class Solution {
         {
             return -1;
         }
-        int low = 0 , high = arr.length-1;
+        int low = 0 , high = arr.length-1 , ans = -1;
         while(low <= high)
         {
             int mid = low + (high-low)/2;
             if(arr[mid] == mid)
             {
-                while(mid >= 0 && arr[mid] == mid)
-                {
-                    mid--;
-                }
-                return mid+1;
+                ans = mid;
+                high = mid-1;
             }
-            if(arr[mid] < mid)
+            else if(arr[mid] < mid)
             {
                 low = mid+1;
             }
@@ -27,6 +24,6 @@ class Solution {
                 high = mid-1;
             }
         }
-        return -1;
+        return ans;
     }
 }
