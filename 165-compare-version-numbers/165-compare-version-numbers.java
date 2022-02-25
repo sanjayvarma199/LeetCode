@@ -1,5 +1,5 @@
 class Solution {
-    //Time O(Max(M,N))
+    //Time O(M+N+Max(M,N))
     //Space O(M+N)
     public int compareVersion(String version1, String version2) {
         if(version1 == null || version1.length() == 0)
