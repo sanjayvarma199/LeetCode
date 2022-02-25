@@ -1,23 +1,29 @@
 class Solution {
-    //Time O(M+N+Max(M,N))
-    //Space O(M+N)
+    //Time O(Max(M,N))
+    //Space O(1)
     public int compareVersion(String version1, String version2) {
-        if(version1 == null || version1.length() == 0)
-        {
-            return version2 == null ? 0 : -1;
-        }
-        String s1[] = version1.split("\\.");
-        String s2[] = version2.split("\\.");
+        int i = 0 , j = 0;
+        int CurrVersion1 , CurrVersion2; // to maintain each every block of both versions
         
-        for(int i = 0 ; i < Math.max(s1.length , s2.length) ; i++)
+        //Process both the strings
+        while(i < version1.length() || j < version2.length())
         {
-            int first_num = (i >= s1.length) ? 0 : Integer.parseInt(s1[i]);
-            int second_num = (i >= s2.length) ? 0 : Integer.parseInt(s2[i]);
-            
-            if(first_num != second_num)
+            CurrVersion1 = 0;
+            while(i < version1.length() && version1.charAt(i) != '.')
             {
-                return first_num > second_num ? 1 : -1;
+                CurrVersion1 = CurrVersion1*10 + version1.charAt(i) - '0';
+                i++;
             }
+            CurrVersion2 = 0;
+            while(j < version2.length() && version2.charAt(j) != '.')
+            {
+                CurrVersion2 = CurrVersion2*10 + version2.charAt(j) - '0';
+                j++;
+            }
+            if(CurrVersion1 > CurrVersion2) return 1;
+            else if(CurrVersion1 < CurrVersion2) return -1;
+            i++;
+            j++;
         }
         return 0;
     }
