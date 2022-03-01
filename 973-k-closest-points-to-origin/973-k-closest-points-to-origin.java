@@ -1,41 +1,62 @@
 class Solution {
-    //Time O(NlogK)
-    //Space O(K)
+    //Time amortized O(N)
+    //Space O(1)
+    int k;
     public int[][] kClosest(int[][] points, int k) {
         if(points == null || points.length == 0)
         {
             return points;
         }
-        PriorityQueue<Pair> PQ = new PriorityQueue<>((a,b) -> (b.distance - a.distance));
-        for(int i = 0 ; i < points.length ; i++)
+        this.k = k;
+        return QuickSelect(points);
+    }
+    private int[][] QuickSelect(int[][] points)
+    {
+        int low = 0 , high = points.length-1 , pivot = points.length;
+        while(pivot != k)
         {
-            Pair p = new Pair(points[i][0] , points[i][1]);
-            PQ.add(p);
-            if(PQ.size() > k)
+            pivot = partition(points , low , high);
+            if(pivot < k)
             {
-                PQ.poll();
+                low = pivot;
+            }
+            else
+            {
+                high = pivot-1;
             }
         }
-        int[][] ans = new int[k][2];
-        int i = 0;
-        while(!PQ.isEmpty())
-        {
-            Pair p = PQ.poll();
-            ans[i][0] = p.x;
-            ans[i][1] = p.y;
-            i++;
-        }
-        return ans;
+        return Arrays.copyOf(points , k);
     }
-}
-class Pair
-{
-    int x , y;
-    int distance;
-    public Pair(int x , int y)
+    private int partition(int[][] points , int low , int high)
     {
-        this.x = x;
-        this.y = y;
-        this.distance = (x*x+ y*y);
+        int[] pivot = points[low + (high-low)/2];
+        while(low < high)
+        {
+            if(distance(points[low]) >= distance(pivot))
+            {
+                swap(points , low , high);
+                high--;
+            }
+            else
+            {
+                low++;
+            }
+        }
+        if(distance(points[low]) < distance(pivot))
+        {
+            low++;
+        }
+        return low;
+    }
+    private void swap(int[][] points, int i , int p)
+    {
+                int[] temp = points[i];
+                points[i] = points[p];
+                points[p] = temp;
+                p++;
+    }
+    private int distance(int[] point)
+    {
+        return point[0]*point[0] + point[1]*point[1];
     }
 }
