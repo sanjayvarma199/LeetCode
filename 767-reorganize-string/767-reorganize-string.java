@@ -1,43 +1,48 @@
 class Solution {
-    //Time O(NlogN)
+    //Time O(N)
     //Space O(1)
     public String reorganizeString(String s) {
         if(s == null || s.length() == 0)
         {
             return s;
         }
-        int max = 0;
-        Map<Character , Integer> map = new HashMap<>();
+        int max = 0 ; char max_c = 'a';
+        int freq_ar[] = new int[26];
+        
         for(int i = 0 ; i < s.length() ; i++)
         {
             char c = s.charAt(i);
-            map.put(c , map.getOrDefault(c , 0)+1);
-            max = Math.max(max , map.get(c));
+            freq_ar[c-'a']++;
+            if(max <= freq_ar[c-'a'])
+            {
+                max = freq_ar[c-'a'];
+                max_c = c; 
+            }
         }
-        if(max > (s.length()+1)/2) return "";
-        //Max heap
-        PriorityQueue<Character> PQ = new PriorityQueue<>((a , b) -> map.get(b) - map.get(a));
         
-        for(char c : map.keySet())
-        {
-            PQ.add(c);
-        }
+        //Edge Case if char exceeds half of the len(s)
+        if(max > (s.length()+1)/2) return "";
         
         char ar[] = new char[s.length()];
         int index = 0;
-        while(!PQ.isEmpty())
+        while(freq_ar[max_c - 'a'] > 0)
         {
-            char c = PQ.poll();
-            int freq = map.get(c);
-            while(freq > 0)
+            ar[index] = max_c;
+            index += 2;
+            freq_ar[max_c - 'a']--;
+        }
+        
+        for(int i = 0 ; i < 26 ; i++)
+        {
+            while(freq_ar[i] > 0)
             {
                 if(index >= s.length())
                 {
                     index = 1;
                 }
-                ar[index] = c;
+                ar[index] = (char)(i+'a');
                 index += 2;
-                freq--;
+                freq_ar[i]--;
             }
         }
         return String.valueOf(ar);
