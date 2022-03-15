@@ -17,14 +17,16 @@ class Solution {
     //Time O(N)
     //Space O(H)
     public int maxDepth(TreeNode root) {
+        return helper(root , 0);
+    }
+    
+    private int helper(TreeNode root , int level)
+    {
+        //base case
         if(root == null)
         {
             return 0;
         }
-        if(root.left == null && root.right == null)
-        {
-            return 1;
-        }
-        return Math.max(maxDepth(root.left) , maxDepth(root.right)) + 1;
+        return Math.max(helper(root.left , level) , helper(root.right , level))+1;
     }
 }
