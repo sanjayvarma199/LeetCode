@@ -33,7 +33,7 @@ class Solution {
         {
             return -1;
         }
-        if(root.left == null && root.right == null) return 0;
+        //if(root.left == null && root.right == null) return 0;
         //logic
         int left = helper(root.left , level);
         int right = helper(root.right , level);
