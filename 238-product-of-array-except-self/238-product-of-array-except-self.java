@@ -1,6 +1,6 @@
 class Solution {
     //Time O(N)
-    //Space O(N)
+    //Space O(1)
     public int[] productExceptSelf(int[] nums) {
         //Input Validation
         if(nums == null || nums.length == 0)
@@ -10,7 +10,6 @@ class Solution {
         
         int n = nums.length;
         int[] Left = new int[n];
-        int[] Right = new int[n];
         
         //Left side
         for(int i = 0 ; i < n ; i++)
@@ -23,20 +22,12 @@ class Solution {
             Left[i] = Left[i-1] * nums[i-1];
         }
         
-        //Right side
-        for(int i = n-1 ; i >= 0 ; i--)
+        int Right = nums[n-1];
+        for(int i = n-2 ; i >= 0 ; i--)
         {
-            if(i == n-1)
-            {
-                Right[i] = 1;
-                continue;
-            }
-            Right[i] = Right[i+1] * nums[i+1];
-        }
-        
-        for(int i = 0 ; i < n ; i++)
-        {
-            Left[i] = Left[i] * Right[i];
+            
+            Left[i] = Left[i] * Right;
+            Right = Right*nums[i];
         }
         
         return Left;
