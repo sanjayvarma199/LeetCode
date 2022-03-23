@@ -1,5 +1,5 @@
 class Solution {
-    //Time O(NlogN)
+    //Time O(N)
     //Space O(1)
     public int[] countBits(int n) {
         int[] ar = new int[n+1];
