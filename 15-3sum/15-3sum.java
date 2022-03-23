@@ -7,26 +7,32 @@ class Solution {
         {
             return new ArrayList<>();
         }
+        
+        //Sort the input array
+        Arrays.sort(nums);
+        
         List<List<Integer>> result = new ArrayList<>();
         
-        //Sort the Array
-        Arrays.sort(nums);
         for(int i = 0 ; i < nums.length ; i++)
         {
-            int low = i + 1 , high = nums.length-1;
-            
-            //Skip the numbers which are equal
+            int low = i+1 , high = nums.length-1;
+            //Skip the duplicates
             if(i > 0 && nums[i] == nums[i-1]) continue;
+
+            //Two pointers to find -ve sum
             while(low < high)
             {
                 int sum = nums[low] + nums[high];
-                if(sum == -nums[i])
+                if(nums[i] == -sum)
                 {
-                    result.add(Arrays.asList(nums[i] , nums[low] , nums[high]));
-                    low++;
-                    high--;
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[i]); list.add(nums[low]) ; list.add(nums[high]);
+                    result.add(list);
+                    low++;high--;
+                    while(low < high && nums[low] == nums[low-1]) low++;
+                    while(low < high && nums[high] == nums[high+1]) high--;
                 }
-                else if(sum < -nums[i])
+                else if(nums[i] < -sum)
                 {
                     low++;
                 }
@@ -34,9 +40,7 @@ class Solution {
                 {
                     high--;
                 }
-                //Skip the numbers which are equal
-                while(i != low-1 && low < nums.length && nums[low] == nums[low-1]) low++;
-                while(high >= 0 && high < nums.length-1 && nums[high] == nums[high+1]) high--;
+                
             }
         }
         return result;
