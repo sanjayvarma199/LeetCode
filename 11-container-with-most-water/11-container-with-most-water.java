@@ -1,20 +1,22 @@
 class Solution {
     //Time O(N)
     //Space O(1)
-    public int maxArea(int[] nums) {
+    public int maxArea(int[] height) {
         //Input Validation
-        if(nums == null || nums.length == 0)
+        if(height == null || height.length < 2)
         {
             return 0;
         }
+        int max_area = 0;
+        int low = 0 , high = height.length-1;
         
-        //Maintain two pointers
-        int low = 0 , high = nums.length-1;
-        int result = 0;
+        //logic
         while(low < high)
         {
-            result = Math.max(result , Math.min(nums[low] , nums[high]) * (high-low));
-            if(nums[low] < nums[high])
+            int min_height = Math.min(height[low] , height[high]);
+            max_area = Math.max(max_area , min_height*(high - low));
+            
+            if(height[low] < height[high]) // Shift towards the greater height
             {
                 low++;
             }
@@ -23,6 +25,6 @@ class Solution {
                 high--;
             }
         }
-        return result;
+        return max_area;
     }
 }
