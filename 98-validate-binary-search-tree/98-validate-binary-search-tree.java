@@ -16,32 +16,19 @@
 class Solution {
     //Time O(N)
     //Space O(H)
-    boolean isValid;
-    TreeNode prev;
+    TreeNode prev = null;
     public boolean isValidBST(TreeNode root) {
         //Base Case
         if(root == null)
         {
             return true;
         }
-        isValid = true;
-        prev = null;
-        helper(root);
-        return isValid;
-    }
-    private void helper(TreeNode root)
-    {
-        if(root == null)
-        {
-            return;
-        }
-        helper(root.left);
+        boolean left = isValidBST(root.left);
         if(prev != null && (prev.val >= root.val))
         {
-            isValid = false;
-            return;
+            return false;
         }
         prev = root;
-        helper(root.right);
+        return left & isValidBST(root.right);
     }
 }
