@@ -17,25 +17,25 @@ class Solution {
     //Time O(N)
     //Space O(H)
     public boolean isSymmetric(TreeNode root) {
-        return helper(root , root);
+        if(root == null)
+        {
+            return true;
+        }
+        return helper(root.left , root.right);
     }
     
     private boolean helper(TreeNode Left , TreeNode Right)
     {
-        //base
         if(Left == null && Right == null)
         {
             return true;
         }
-        //logic
-        if((Left != null && Right == null) || (Left == null && Right != null))
+        if(Left == null || Right == null)
         {
             return false;
         }
-        if(Left.val != Right.val)
-        {
-            return false;
-        }
-        return helper(Left.left , Right.right) && helper(Left.right , Right.left);
+        if(Left.val != Right.val) return false;
+        
+        return helper(Left.right , Right.left) && helper(Left.left , Right.right);
     }
 }
