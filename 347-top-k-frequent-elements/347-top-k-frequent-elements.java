@@ -1,32 +1,47 @@
 class Solution {
-    //Time O(N + Nlogk)
-    //Space O(N + K)
     public int[] topKFrequent(int[] nums, int k) {
+        //Input Validation
         if(nums == null || nums.length == 0)
         {
             return nums;
         }
-        Map<Integer , Integer> map = new HashMap<>();
-        for(int i = 0 ; i < nums.length ; i++)
+        
+        List<Integer> ar[] = new List[nums.length+1];
+        
+        List<Integer> ans = new ArrayList<>();
+        
+        //To maintain the freq
+        HashMap<Integer , Integer> map = new HashMap<>();
+        
+        for(int i : nums)
         {
-            map.put(nums[i] , map.getOrDefault(nums[i] , 0) + 1);
+            map.put(i , map.getOrDefault(i , 0)+1);
         }
         
-        PriorityQueue<Integer> PQ = new PriorityQueue<>((a , b) -> (map.get(a) - map.get(b)));
-        for(int i : map.keySet())
+        //Allocate all the numbers to their respective freq
+        for(Integer i : map.keySet())
         {
-            PQ.add(i);
-            if(PQ.size() > k)
+            int index = map.get(i);
+            if(ar[index] == null)
             {
-                PQ.poll();
+                ar[index] = new ArrayList<>();
+            }
+            ar[index].add(i);
+        }
+        
+        for(int i = nums.length ; i >= 0 ; i--)
+        {
+            if(ar[i] == null) continue;
+            for(int j : ar[i])
+            {
+                ans.add(j);
+                k--;
+                if(k == 0)
+                {
+                    return ans.stream().mapToInt(l -> l).toArray();
+                }
             }
         }
-        int ans[] = new int[k];
-        int i = k;
-        while(!PQ.isEmpty())
-        {
-            ans[--i] = PQ.poll();
-        }
-        return ans;
+        return nums;
     }
 }
