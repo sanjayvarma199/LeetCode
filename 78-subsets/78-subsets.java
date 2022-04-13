@@ -15,25 +15,15 @@ class Solution {
     private void helper(int[] nums , int index , List<Integer> path)
     {
         //Base Case
-        if(index > nums.length)
-        {
-            return;
-        }
-        
-        if(index == nums.length)
-        {
-            result.add(new ArrayList<>(path));
-            return;
-        }
+        result.add(new ArrayList<>(path));
         //Logic
         
-        //Don't Chose
-        helper(nums , index+1 , path);
-        
-        //Chose
-        path.add(nums[index]);
-        helper(nums , index+1 , path);
-        //Backtrack
-        path.remove(path.size()-1);
+        for(int i = index ; i < nums.length ; i++)
+        {
+            path.add(nums[i]);
+            helper(nums , i+1 , path);
+            //Backtrack
+            path.remove(path.size()-1);
+        }
     }
 }
