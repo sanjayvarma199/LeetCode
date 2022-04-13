@@ -17,7 +17,7 @@ class Solution {
     private void helper(int[] candidates , int index , int curr_target , List<Integer> path)
     {
         //Base Case
-        if(index >= candidates.length || curr_target > target)
+        if(curr_target > target)
         {
             return;
         }
@@ -29,14 +29,14 @@ class Solution {
         }
         //Logic
         
-        //Dont' Chose
-        helper(candidates , index+1 , curr_target , path);
-        
-        path.add(candidates[index]);
-        
-        helper(candidates , index , curr_target+candidates[index] , path);
-        
-        //Backtrack
-        path.remove(path.size()-1);
+        for(int i = index ; i < candidates.length ; i++)
+        {
+            path.add(candidates[i]);
+            
+            helper(candidates , i , curr_target+candidates[i] , path);
+            
+            //Backtrack
+            path.remove(path.size()-1);
+        }
     }
 }
