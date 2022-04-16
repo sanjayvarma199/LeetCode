@@ -24,21 +24,26 @@ class Solution {
             return root;
         }
         sum = 0;
-        helper(root);
-        return root;
-    }
-    
-    private void helper(TreeNode root)
-    {
-        //Base Case
-        if(root == null)
+        
+        TreeNode result = root;
+        
+        LinkedList<TreeNode> Q = new LinkedList<>();
+        
+        //Q.add(root);
+        
+        while(root != null || !Q.isEmpty())
         {
-            return;
+            while(root != null)
+            {
+                Q.addFirst(root);
+                root = root.right;
+            }
+            root = Q.poll();
+            root.val = root.val + sum;
+            sum = root.val;
+            root = root.left;
         }
-        //Logic
-        helper(root.right);
-        root.val = root.val + sum;
-        sum = root.val;
-        helper(root.left);
+        
+        return result;
     }
 }
