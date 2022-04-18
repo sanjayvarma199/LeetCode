@@ -14,32 +14,26 @@
  * }
  */
 class Solution {
-    //Time O(Nlogk)
-    //Space O(H+k)
-    PriorityQueue<TreeNode> PQ;
-    int k;
+    //Time O(N)
+    //Space O(H)
     public int kthSmallest(TreeNode root, int k) {
         if(root == null)
         {
             return 0;
         }
-        this.k = k;
-        PQ = new PriorityQueue<>((a,b) -> (b.val - a.val));
-        helper(root);
-        return PQ.poll().val;
-    }
-    
-    private void helper(TreeNode root)
-    {
-        if(root == null)
-        {
-            return;
-        }
-        PQ.add(root);
-        if(PQ.size() > k) PQ.poll();
+        Stack<TreeNode> stack = new Stack<>();
         
-        //Recurse
-        helper(root.left);
-        helper(root.right);
+        while(root != null || !stack.isEmpty())
+        {
+            while(root != null)
+            {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if(--k == 0) return root.val;
+            root = root.right;
+        }
+        return -1;
     }
 }
