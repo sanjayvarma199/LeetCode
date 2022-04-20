@@ -14,15 +14,16 @@
  * }
  */
 class BSTIterator {
-    //Time O(N)
+
+    //TC O(H)
     //Space O(H)
     Stack<TreeNode> stack;
     public BSTIterator(TreeNode root) {
         stack = new Stack<>();
-        helper(root);
+        advance(root);
     }
     
-    private void helper(TreeNode root)
+    private void advance(TreeNode root)
     {
         while(root != null)
         {
@@ -32,9 +33,9 @@ class BSTIterator {
     }
     
     public int next() {
-        TreeNode pop = stack.pop();
-        helper(pop.right);
-        return pop.val;
+        TreeNode temp = stack.pop();
+        advance(temp.right);
+        return temp.val;
     }
     
     public boolean hasNext() {
