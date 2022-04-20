@@ -1,18 +1,15 @@
 class KthLargest {
-    //Time O(NlogK) N --> add calls
+    //Time O(Nlogk)
     //Space O(K)
     PriorityQueue<Integer> PQ;
     int k;
     public KthLargest(int k, int[] nums) {
-        this.k = k;
         PQ = new PriorityQueue<>();
-        for(int i = 0 ; i < nums.length ; i++)
+        this.k = k;
+        for(int i : nums)
         {
-            PQ.add(nums[i]);
-            if(PQ.size() > k)
-            {
-                PQ.poll();
-            }
+            PQ.add(i);
+            if(PQ.size() > k) PQ.poll();
         }
     }
     
