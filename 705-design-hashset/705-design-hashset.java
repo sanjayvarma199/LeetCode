@@ -1,53 +1,48 @@
 class MyHashSet {
-    //Time O(N)
-    //Space O(1)
-    private int buckets , bucketItems;
-    boolean Storage[][];
+    //Time O(1)
+    //Space O(N)
+
+    int buckets = 1001 , bucketList = 1001;
+    boolean set[][];
     public MyHashSet() {
-        buckets = 1001;
-        bucketItems = 1001;
-        Storage = new boolean[buckets][];
+        set = new boolean[buckets][];
     }
     
-    private int bucket(int key)
+    private int getBucket(int key)
     {
-        return key % buckets;
+        return key%buckets;
     }
     
-    private int bucketItem(int key)
+    private int getBucketItem(int key)
     {
-        return key / bucketItems;
+        return key / bucketList;
     }
     
     public void add(int key) {
-        int bucket = bucket(key);
-        if(Storage[bucket] == null)
+        int i = getBucket(key) , j = getBucketItem(key);
+        if(set[i] == null)
         {
-            Storage[bucket] = new boolean[bucketItems];
+            set[i] = new boolean[bucketList];
         }
-        int bucketItem = bucketItem(key);
-        Storage[bucket][bucketItem] = true;
+        set[i][j] = true;
     }
     
     public void remove(int key) {
-        int bucket = bucket(key);
-        if(Storage[bucket] == null)
+        int i = getBucket(key) , j = getBucketItem(key);
+        if(set[i] == null)
         {
             return;
         }
-        int bucketItem = bucketItem(key);
-        Storage[bucket][bucketItem] = false;
-        return;
+        set[i][j] = false;
     }
     
     public boolean contains(int key) {
-        int bucket = bucket(key);
-        if(Storage[bucket] == null)
+        int i = getBucket(key) , j = getBucketItem(key);
+        if(set[i] == null)
         {
             return false;
         }
-        int bucketItem = bucketItem(key);
-        return Storage[bucket][bucketItem];
+        return set[i][j];
     }
 }
 
