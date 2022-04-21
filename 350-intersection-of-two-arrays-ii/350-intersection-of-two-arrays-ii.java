@@ -1,5 +1,5 @@
 class Solution {
-    //Time O(Max(nums1 , nums2))
+    //Time O(NlogN + MlogM)
     //Space O(1)
     public int[] intersect(int[] nums1, int[] nums2) {
         if(nums1 == null || nums1.length == 0 || nums2 == null || nums2.length == 0)
