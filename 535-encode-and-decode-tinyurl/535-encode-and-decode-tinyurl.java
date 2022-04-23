@@ -1,16 +1,37 @@
 public class Codec {
-
-    int counter = 0;
-    Map<Integer , String> map = new HashMap<>();
+    
+    String s = "0123456789abdefghijklmnopqrstuvwxyz";
+    Random rand = new Random();
+    String key = getRandom();
+    
+    private String getRandom()
+    {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ; i < 6 ; i++)
+        {
+            sb.append(s.charAt(rand.nextInt(35)));
+        }
+        return sb.toString();
+    }
+    
+    Map<String , String> map = new HashMap<>();
     // Encodes a URL to a shortened URL.
     public String encode(String longUrl) {
-        map.put(counter , longUrl);
-        return "http://tinyurl.com/" + counter++;
+        while(map.containsKey(key))
+        {
+             key = getRandom();
+        }
+        map.put(key , longUrl);
+        return key;
     }
 
     // Decodes a shortened URL to its original URL.
     public String decode(String shortUrl) {
-        return map.get(Integer.parseInt(shortUrl.replace("http://tinyurl.com/" , "")));
+        if(!map.containsKey(shortUrl))
+        {
+            return "";
+        }
+        return map.get(shortUrl);
     }
 }
 
