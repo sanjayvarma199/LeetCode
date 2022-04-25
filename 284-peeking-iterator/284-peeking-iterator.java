@@ -2,13 +2,11 @@
 // https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html
 
 class PeekingIterator implements Iterator<Integer> {
-    
-    Iterator<Integer> It;
     Integer Next;
+    Iterator<Integer> It;
 	public PeekingIterator(Iterator<Integer> iterator) {
 	    // initialize any member here.
 	    It = iterator;
-        Next = null;
         next();
 	}
 	
@@ -28,12 +26,10 @@ class PeekingIterator implements Iterator<Integer> {
             Next = It.next();
         }
         return temp;
-        
 	}
 	
 	@Override
 	public boolean hasNext() {
-	    if(Next != null) return true;
-        return false;
+	    return (Next != null);
 	}
 }
