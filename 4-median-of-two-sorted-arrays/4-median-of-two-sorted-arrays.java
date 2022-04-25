@@ -1,4 +1,6 @@
 class Solution {
+    //Time O(M+N)
+    //Spaec O(M+N)
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         //Input Validation
         if(nums1 == null || nums2 == null)
