@@ -1,5 +1,5 @@
 class Solution {
-    //Time O(N)
+    //Time O(S + T)
     //Space O(1)
     public String customSortString(String order, String s) {
         if(order == null)
