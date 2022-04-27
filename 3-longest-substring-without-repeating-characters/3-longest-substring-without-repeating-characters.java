@@ -13,15 +13,9 @@ class Solution {
         for(int i = 0 ; i < s.length() ; i++)
         {
             char c = s.charAt(i);
-            if(map.containsKey(c))
+            if(map.containsKey(c) && left <= map.get(c))
             {
-                int temp = left , index = map.get(c);
                 left = map.get(c) + 1;
-                while(temp <= index)
-                {
-                    map.remove(s.charAt(temp) , map.get(s.charAt(temp)));
-                    temp++;
-                }
             }
             map.put(c , i);
             result = Math.max(i-left+1, result);
