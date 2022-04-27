@@ -6,30 +6,33 @@ class Solution {
         {
             return 0;
         }
-        int n = points.length , result = 0;
-        boolean visited[] = new boolean[n];
         
-        PriorityQueue<Pair> PQ = new PriorityQueue<>((a, b) -> (a.weight - b.weight));
-        PQ.add(new Pair(0,0));
-                
+        int n = points.length , result = 0;
+        
+        PriorityQueue<Pair> PQ = new PriorityQueue<>((a , b) -> (a.weight - b.weight));
+        boolean[] visited = new boolean[n];
+        
+        PQ.add(new Pair(0 , 0));
+        
         while(!PQ.isEmpty())
         {
             Pair p = PQ.poll();
+            
             if(visited[p.vertice])
             {
                 continue;
             }
             
-            visited[p.vertice] = true;
             result += p.weight;
+            visited[p.vertice]  = true;
             
             for(int i = 0 ; i < n ; i++)
             {
                 if(!visited[i])
                 {
-                    int weight = Math.abs(points[p.vertice][0] - points[i][0]) + Math.abs(points[p.vertice][1] - points[i][1]);
+                    int dist = Math.abs(points[p.vertice][0] - points[i][0]) + Math.abs(points[p.vertice][1] - points[i][1]);
                     
-                    PQ.add(new Pair(weight , i));
+                    PQ.add(new Pair(dist , i));
                 }
             }
         }
@@ -45,5 +48,4 @@ class Pair
         this.weight = weight;
         this.vertice = vertice;
     }
-    
 }
