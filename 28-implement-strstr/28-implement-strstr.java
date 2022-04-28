@@ -1,28 +1,63 @@
 class Solution {
-    //Time O(M*N)
-    //Space O(1)
+    //Time O(M+N)
+    //Space O(N)
     public int strStr(String haystack, String needle) {
         if(needle == null || needle.length() == 0)
         {
             return 0;
         }
-        if(needle.length() > haystack.length())
+        int m = needle.length() , n = haystack.length();
+        int ar[] = LPS(needle);
+        
+        int i = 0 , j = 0;
+        while(i < haystack.length())
         {
-            return -1;
-        }
-        for(int i = 0 ; i < haystack.length() ; i++)
-        {
-            int temp = i , j = 0;
-            while(temp < haystack.length() && j < needle.length() && haystack.charAt(temp) == needle.charAt(j))
+            char hay_char = haystack.charAt(i) , needle_char = needle.charAt(j);
+            if(hay_char == needle_char)
             {
-                temp++;
                 j++;
+                i++;
+                if(j == m) return i-m;
             }
-            if(j == needle.length())
+            else if(j > 0)
             {
-                return i;
+                j = ar[j-1];
             }
+            else
+            {
+                i++;
+            }
+            
         }
         return -1;
+    }
+    
+    private int[] LPS(String s)
+    {
+        int[] ar = new int[s.length()];
+        if(s.length() <= 1) 
+        {
+            return ar;
+        }
+        int i = 1 , j = 0;
+        while(i < s.length())
+        {
+            char charAt_i = s.charAt(i) , charAt_j = s.charAt(j);
+            if(charAt_i == charAt_j)
+            {
+                j++;
+                ar[i] = j;
+                i++;
+            }
+            else if(j > 0)
+            {
+                j = ar[j-1];
+            }
+            else
+            {
+                i++;
+            }
+        }
+        return ar;
     }
 }
