@@ -6,19 +6,12 @@ class Solution {
         {
             return 0;
         }
-        
-        int min = Integer.MAX_VALUE , max = 0;
-        for(int i = 0 ; i < prices.length ; i++)
+        int min = prices[0] , ans = 0;
+        for(int i = 1 ; i < prices.length ; i++)
         {
-            if(prices[i] <  min)
-            {
-                min = prices[i];
-            }
-            else if(prices[i] - min > max)
-            {
-                max = prices[i]-min;
-            }
+            ans = Math.max(prices[i] - min , ans);
+            min = Math.min(min , prices[i]);
         }
-        return max;
+        return ans;
     }
 }
