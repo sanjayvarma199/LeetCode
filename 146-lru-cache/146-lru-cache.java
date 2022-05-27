@@ -1,83 +1,79 @@
 class LRUCache {
-    //Time O(1)
-    //Space O(capacity)
     class Node
     {
         Node prev , next;
         int key , val;
         public Node(int key , int val)
         {
-            prev = null ; next = null;
             this.key = key;
             this.val = val;
+            prev = null; next = null;
         }
     }
     
-    Node LRU_list , dummy_end;
+    Node head , tail;
+    Map<Integer , Node> map;
     int capacity;
-    
-    HashMap<Integer , Node> map;
     public LRUCache(int capacity) {
-        LRU_list = new Node(-1,-1);
-        dummy_end = new Node(-1,-1);
-        LRU_list.next = dummy_end;
-        dummy_end.prev = LRU_list;
+        head =  new Node(-1,-1);
+        tail = new Node(-1,-1);
+        head.next = tail;
+        tail.prev = head;
         
         this.capacity = capacity;
         map = new HashMap<>();
     }
     
     public int get(int key) {
-        if(!map.containsKey(key))
-        {
-            return -1;
-        }
-        Node temp = map.get(key);
-        
-        temp.prev.next = temp.next;
-        temp.next.prev = temp.prev;
-            
-        AddtoHead(temp);
-        return map.get(key).val;
-    }
-    
-    public void put(int key, int value) {
-        if(!map.containsKey(key) && capacity == 0)
-        {
-            Node remove = dummy_end.prev;
-            removeFromLast(remove);
-            map.remove(remove.key , remove);
-            capacity++;
-        }
-        //Limt not exceeded
+        Node node;
         if(map.containsKey(key))
         {
-            Node temp = map.get(key);
-            temp.val = value;
-            temp.prev.next = temp.next;
-            temp.next.prev = temp.prev; 
-            AddtoHead(temp);
+            node = map.get(key);
+            remove(node);
+            addToHead(node);
         }
         else
         {
-            Node temp = new Node(key,value);
-            AddtoHead(temp);
-            map.put(key , temp);
-            capacity--;
+             return -1;
         }
+        return node.val;
     }
     
-    private void removeFromLast(Node node)
-    {
-        dummy_end.prev.prev.next = dummy_end;
-        dummy_end.prev = dummy_end.prev.prev;
+    public void put(int key, int value) {
+        Node node;
+        if(!map.containsKey(key) && capacity == 0)
+        {
+            Node temp = tail.prev;
+            remove(temp);
+            map.remove(temp.key , temp);
+            capacity++;
+        }
+        if(map.containsKey(key))
+        {
+            node = map.get(key);
+            node.val = value;
+            remove(node);
+        }
+        else
+        {
+            node = new Node(key , value);
+            capacity--;
+            map.put(key , node);
+        }
+        addToHead(node);
     }
-    private void AddtoHead(Node temp)
+    
+    private void remove(Node node)
     {
-        temp.next = LRU_list.next;
-        LRU_list.next.prev = temp;
-        LRU_list.next = temp;
-        temp.prev = LRU_list;
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+    private void addToHead(Node node)
+    {
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+        node.prev = head;
     }
 }
 
