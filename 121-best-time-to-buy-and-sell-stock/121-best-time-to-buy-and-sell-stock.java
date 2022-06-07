@@ -9,8 +9,14 @@ class Solution {
         int min = prices[0] , ans = 0;
         for(int i = 1 ; i < prices.length ; i++)
         {
-            ans = Math.max(prices[i] - min , ans);
-            min = Math.min(min , prices[i]);
+            if(prices[i] < min)
+            {
+                min = prices[i];
+            }
+            else
+            {
+                ans = Math.max(Math.abs(prices[i]-min) , ans);
+            }
         }
         return ans;
     }
