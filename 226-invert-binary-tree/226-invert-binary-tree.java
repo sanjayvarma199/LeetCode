@@ -15,15 +15,25 @@
  */
 class Solution {
     //Time O(N)
-    //Space O(H)
+    //Space O(N)
     public TreeNode invertTree(TreeNode root) {
-        if(root == null || (root.left == null && root.right == null)) 
+        if(root == null)
         {
             return root;
         }
-        TreeNode temp = invertTree(root.left);
-        root.left = invertTree(root.right);
-        root.right = temp;
+        Queue<TreeNode> Q = new LinkedList<>();
+        
+        Q.add(root);
+        while(!Q.isEmpty())
+        {
+            TreeNode curr = Q.poll();
+            TreeNode temp = curr.left;
+            curr.left = curr.right;
+            curr.right = temp;
+            
+            if(curr.left != null) Q.add(curr.left);
+            if(curr.right != null) Q.add(curr.right);
+        }
         return root;
     }
 }
