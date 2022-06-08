@@ -2,19 +2,23 @@ class Solution {
     //Time O(N)
     //Space O(1)
     public int maxSubArray(int[] nums) {
-        //Input Validation
         if(nums == null || nums.length == 0)
         {
             return 0;
         }
-        
-        //Logic
-        int sum = 0 , result = Integer.MIN_VALUE;
-        for(int i = 0 ; i < nums.length ; i++)
+        int ans = nums[0] , max = nums[0];
+        for(int i = 1 ; i < nums.length ; i++)
         {
-            sum = Math.max(nums[i] , sum + nums[i]);
-            result = Math.max(result , sum);
+            if(nums[i] + ans > nums[i])
+            {
+                ans += nums[i];
+            }
+            else
+            {
+                ans = nums[i];
+            }
+            max = Math.max(max ,ans);
         }
-        return result;
+        return max;
     }
 }
