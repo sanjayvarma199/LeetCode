@@ -23,25 +23,23 @@ class Solution {
             return true;
         }
         isValid = true;
-        helper(root , 0);
+        helper(root);
         return isValid;
     }
-    private int helper(TreeNode root , int level)
+    
+    private int helper(TreeNode root)
     {
-        //base
-        if((root == null))
+        if(root == null)
         {
             return -1;
         }
-        //if(root.left == null && root.right == null) return 0;
-        //logic
-        int left = helper(root.left , level);
-        int right = helper(root.right , level);
-        if(Math.abs(left - right) > 1 )
+        int Left = helper(root.left);
+        int Right = helper(root.right);
+        if(Math.abs(Left-Right) > 1)
         {
             isValid = false;
             return -1;
         }
-        return Math.max(left , right)+1;
+        return Math.max(Left , Right)+1;
     }
 }
