@@ -16,26 +16,32 @@
 class Solution {
     //Time O(N)
     //Space O(H)
+    boolean isValid;
     public boolean isSymmetric(TreeNode root) {
-        if(root == null)
-        {
-            return true;
-        }
         return helper(root.left , root.right);
     }
     
     private boolean helper(TreeNode Left , TreeNode Right)
     {
+        //base Case
         if(Left == null && Right == null)
         {
             return true;
         }
-        if(Left == null || Right == null)
+        if(Left != null && Right == null)
         {
             return false;
         }
-        if(Left.val != Right.val) return false;
+        if(Left == null && Right != null)
+        {
+            return false;
+        }
+        if(Left.val != Right.val)
+        {
+            return false;
+        }
+        return helper(Left.left , Right.right) && helper(Left.right , Right.left);
+        //logic
         
-        return helper(Left.right , Right.left) && helper(Left.left , Right.right);
     }
 }
