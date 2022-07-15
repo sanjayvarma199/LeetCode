@@ -1,6 +1,6 @@
 class MyHashMap {
-    //Time amortized O(1)
-    //Space O(10000)
+    //Time O(1) Amortized
+    //Space O(1)
     class Node
     {
         int key , val;
@@ -9,21 +9,23 @@ class MyHashMap {
         {
             this.key = key;
             this.val = val;
+            next = null;
         }
     }
     Node nodes[];
+    int bucketSize = 1001;
     public MyHashMap() {
-        nodes = new Node[10000];
+        nodes = new Node[bucketSize];
     }
     
     private int Index(int key)
     {
-        return Integer.hashCode(key) % nodes.length;
+        return Integer.hashCode(key) % bucketSize;
     }
     
     private Node Find(Node head , int key)
     {
-        Node prev = null , curr = head;
+        Node curr = head , prev = null;
         while(curr != null && curr.key != key)
         {
             prev = curr;
@@ -36,19 +38,17 @@ class MyHashMap {
         int index = Index(key);
         if(nodes[index] == null)
         {
-            nodes[index] = new Node(-1 , -1);
+            nodes[index] = new Node(-1,-1);
         }
-            Node find = Find(nodes[index] , key);
-            if(find.next == null)
-            {
-                //No key is present in the map create the new one
-                find.next = new Node(key , value);
-            }
-            else
-            {
-                //Replace the value
-                find.next.val = value;
-            }
+        Node head = Find(nodes[index] , key);
+        if(head.next == null)
+        {
+            head.next = new Node(key , value);
+        }
+        else
+        {
+            head.next.val = value;
+        }
     }
     
     public int get(int key) {
@@ -57,23 +57,22 @@ class MyHashMap {
         {
             return -1;
         }
-        Node find = Find(nodes[index] , key);
-        if(find.next == null)
+        Node head = Find(nodes[index] , key);
+        if(head.next == null)
         {
             return -1;
         }
-        else
-        {
-            return find.next.val;
-        }
+        return head.next.val;
     }
     
     public void remove(int key) {
         int index = Index(key);
         if(nodes[index] == null) return;
-        Node find = Find(nodes[index] , key);
-        if(find.next == null) return;
-        find.next = find.next.next;
+        Node head = Find(nodes[index] , key);
+        if(head.next != null)
+        {
+            head.next = head.next.next;
+        }
     }
 }
 
