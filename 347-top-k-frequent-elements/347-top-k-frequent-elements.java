@@ -1,47 +1,44 @@
 class Solution {
+    //Time O(N)
+    //Space O(N)
     public int[] topKFrequent(int[] nums, int k) {
         //Input Validation
         if(nums == null || nums.length == 0)
         {
             return nums;
         }
+        Map<Integer , Integer> map = new HashMap<>();
         
-        List<Integer> ar[] = new List[nums.length+1];
-        
-        List<Integer> ans = new ArrayList<>();
-        
-        //To maintain the freq
-        HashMap<Integer , Integer> map = new HashMap<>();
-        
-        for(int i : nums)
+        for(int i = 0 ; i < nums.length ; i++)
         {
-            map.put(i , map.getOrDefault(i , 0)+1);
+            map.put(nums[i] , map.getOrDefault(nums[i] , 0)+1);
         }
         
-        //Allocate all the numbers to their respective freq
-        for(Integer i : map.keySet())
+        List<Integer> ar[] = new List[nums.length + 1];
+        
+        for(int ele : map.keySet())
         {
-            int index = map.get(i);
-            if(ar[index] == null)
+            int freq = map.get(ele);
+            if(ar[freq] == null) 
             {
-                ar[index] = new ArrayList<>();
+                ar[freq] = new ArrayList<>();
             }
-            ar[index].add(i);
+            ar[freq].add(ele);
         }
         
+        int ans[] = new int[k];
+        int j = 0;
         for(int i = nums.length ; i >= 0 ; i--)
         {
             if(ar[i] == null) continue;
-            for(int j : ar[i])
+            for(int ele : ar[i])
             {
-                ans.add(j);
+                ans[j] = ele;
+                j++;
                 k--;
-                if(k == 0)
-                {
-                    return ans.stream().mapToInt(l -> l).toArray();
-                }
+                if(k == 0) return ans;
             }
         }
-        return nums;
+        return ans;
     }
 }
