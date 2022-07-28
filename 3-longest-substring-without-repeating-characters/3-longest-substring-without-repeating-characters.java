@@ -2,24 +2,24 @@ class Solution {
     //Time O(N)
     //Space O(1)
     public int lengthOfLongestSubstring(String s) {
+        //Input Validation
         if(s == null || s.length() == 0)
         {
             return 0;
         }
-        
-        int left = 0 , result = 0;
+        int ans = 0 , i = 0 , j = 0;
         Map<Character , Integer> map = new HashMap<>();
-        
-        for(int i = 0 ; i < s.length() ; i++)
+        while(j < s.length())
         {
-            char c = s.charAt(i);
-            if(map.containsKey(c) && left <= map.get(c))
+            char c = s.charAt(j);
+            if(map.containsKey(c) && i <= map.get(c))
             {
-                left = map.get(c) + 1;
+                i = map.get(c) + 1;
             }
-            map.put(c , i);
-            result = Math.max(i-left+1, result);
+            map.put(c , j);
+            ans = Math.max(ans , j-i+1);
+            j++;
         }
-        return result;
+        return ans;
     }
 }
