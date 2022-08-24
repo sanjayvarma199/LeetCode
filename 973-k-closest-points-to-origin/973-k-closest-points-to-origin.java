@@ -1,30 +1,57 @@
 class Solution {
-    //TC O(NlogN)
-    //SC O(K)
+    //TC O(N) amortized
+    //SC O(1)
     public int[][] kClosest(int[][] points, int k) {
-        //Input Validation
+        //Input Validation 
         if(points == null || points.length == 0)
         {
             return points;
         }
-        
-        PriorityQueue<int[]> PQ = new PriorityQueue<>((a,b) -> (-(a[0]*a[0] + a[1]*a[1]) + (b[0]*b[0] + b[1]*b[1])));
-        
-        for(int i = 0 ; i < points.length ; i++)
+        int low = 0 , high = points.length-1 , pivot = points.length;
+        while(pivot != k)
         {
-            PQ.add(points[i]);
-            if(PQ.size() > k)
+            pivot = partition(points , low , high);
+            if(pivot < k)
             {
-                PQ.poll();
+                low = pivot;
+            }
+            else
+            {
+                high = pivot-1;
             }
         }
-        int[][] ans = new int[k][2];
-        int i = k-1;
-        while(!PQ.isEmpty())
+        return Arrays.copyOf(points , k);
+    }
+    private int partition(int[][] points , int low , int high)
+    {
+        int[] pivot = points[low + (high-low)/2];
+        while(low < high)
         {
-            ans[i] = PQ.poll();
-            i--;
+            if(distance(points[low]) >= distance(pivot))
+            {
+                swap(points , low , high);
+                high--;
+            }
+            else
+            {
+                low++;
+            }
         }
-        return ans;
+        if(distance(points[low]) < distance(pivot))
+        {
+            low++;
+        }
+        return low;
+    }
+    private void swap(int[][] points, int i , int p)
+    {
+                int[] temp = points[i];
+                points[i] = points[p];
+                points[p] = temp;
+                p++;
+    }
+    private int distance(int[]points)
+    {
+        return points[0] * points[0] + points[1] * points[1];
     }
 }
