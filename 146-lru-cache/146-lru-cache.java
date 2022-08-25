@@ -1,5 +1,4 @@
 class LRUCache {
-
     class Node
     {
         Node prev , next;
@@ -10,18 +9,30 @@ class LRUCache {
             this.val = val;
         }
     }
-    
+    Map<Integer , Node> map;
     Node head , tail;
     int capacity;
-    Map<Integer , Node> map;
     public LRUCache(int capacity) {
+        map = new HashMap<>();
         head = new Node(-1,-1);
         tail = new Node(-1,-1);
-        
-        this.capacity = capacity;
         head.next = tail;
         tail.prev = head;
-        map = new HashMap<>();
+        this.capacity = capacity;
+    }
+    
+    public void remove(Node node)
+    {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+    
+    public void addToHead(Node node)
+    {
+        node.next =  head.next;
+        node.prev = head;
+        head.next.prev = node;
+        head.next = node;
     }
     
     public int get(int key) {
@@ -29,48 +40,35 @@ class LRUCache {
         {
             return -1;
         }
-        Node node = map.get(key);
-        removeNode(node);
-        addToHead(node);
-        return node.val;
+        Node curr = map.get(key);
+        remove(curr);
+        addToHead(curr);
+        return curr.val;
     }
     
     public void put(int key, int value) {
-        Node node;
-        if(!map.containsKey(key) && capacity == 0)
+        if(capacity == 0 && !map.containsKey(key))
         {
-            node = tail.prev;
-            map.remove(node.key , node);
-            removeNode(node);
+            Node curr = tail.prev;
+            remove(curr);
+            map.remove(curr.key , curr);
             capacity++;
         }
+        Node curr;
         if(map.containsKey(key))
         {
-            node = map.get(key);
-            node.val = value;
-            removeNode(node);
+            curr = map.get(key);
+            curr.val = value;
+            remove(curr);
         }
         else
         {
-            node = new Node(key , value);
-            map.put(key , node);
+            curr = new Node(key , value);
+            map.put(key , curr);
             capacity--;
         }
-        addToHead(node);
-    }
-    
-    private void addToHead(Node node)
-    {
-        node.next = head.next;
-        node.prev = head;
-        head.next.prev = node;
-        head.next = node;
-    }
-    
-    private void removeNode(Node node)
-    {
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
+        addToHead(curr);
+        return;
     }
 }
 
