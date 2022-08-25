@@ -1,26 +1,23 @@
 class Solution {
-    //Time O(V+E)
-    //Space O(V+E) 
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        //Input Validation
-        if(prerequisites == null || numCourses == 0)
+    //TC O(V+E)
+    //SC O(v+E)
+    public boolean canFinish(int numCourses, int[][] prereq) {
+        if(prereq == null || prereq.length == 0)
         {
             return true;
         }
+        int n = prereq.length;
         int[] InDegrees = new int[numCourses];
-        
-        //Calculate the InDegrees
-        for(int i = 0 ; i < prerequisites.length ; i++)
+        for(int i = 0 ; i < n ; i++)
         {
-            InDegrees[prerequisites[i][0]]++;
+            InDegrees[prereq[i][0]]++;
         }
         
-        //To maintain dependency map
-        HashMap<Integer,List<Integer>> map = new HashMap<>();
+        Map<Integer , List<Integer>> map = new HashMap<>();
         
-        for(int i = 0 ; i < prerequisites.length ; i++)
+        for(int i = 0 ; i < n ; i++)
         {
-            int in = prerequisites[i][1] , out = prerequisites[i][0];
+            int in = prereq[i][1] , out = prereq[i][0];
             if(!map.containsKey(in))
             {
                 map.put(in , new ArrayList<>());
@@ -30,7 +27,6 @@ class Solution {
         
         Queue<Integer> Q = new LinkedList<>();
         
-        //Couses with no prereqs
         for(int i = 0 ; i < numCourses ; i++)
         {
             if(InDegrees[i] == 0)
@@ -42,28 +38,26 @@ class Solution {
         while(!Q.isEmpty())
         {
             int curr = Q.poll();
-            List<Integer> list = map.get(curr);
-            
-            //Edge Case
-            if(list == null) continue;
-            
-            for(int i : list)
+            List<Integer> curr_list = map.get(curr);
+            if(curr_list == null) continue;
+            for(int depend : curr_list)
             {
-                InDegrees[i]--;
-                if(InDegrees[i] == 0)
+                InDegrees[depend]--;
+                if(InDegrees[depend] == 0)
                 {
-                    Q.add(i);
+                    Q.add(depend);
                 }
             }
         }
         
-        for(int i : InDegrees)
+        for(int i = 0 ; i < numCourses ; i++)
         {
-            if(i != 0)
+            if(InDegrees[i] != 0)
             {
                 return false;
             }
         }
         return true;
+        
     }
 }
