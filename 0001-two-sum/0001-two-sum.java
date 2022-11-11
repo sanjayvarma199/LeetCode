@@ -1,6 +1,6 @@
 class Solution {
     //TC O(N)
-    //SC O(1)
+    //SC O(N)
     public int[] twoSum(int[] nums, int target) {
         //Input Validation
         if(nums == null || nums.length == 0)
