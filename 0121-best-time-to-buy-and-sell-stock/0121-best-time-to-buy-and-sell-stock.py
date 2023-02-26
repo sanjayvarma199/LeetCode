@@ -7,8 +7,6 @@ class Solution:
         if False:
             [sellday, buyday, work] = self.ntime_constant_space(prices)
         p = self._compute_profit(prices, sellday, buyday)
-        if p < 0:
-            return 0;
         return p
 
     #############################################
@@ -140,4 +138,6 @@ class Solution:
         assert b >= 0 and b < n
         assert s >= b
         p = a[s] - a[b]
+        if p < 0:
+            return 0;
         return p
